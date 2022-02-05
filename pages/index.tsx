@@ -1,31 +1,35 @@
-import type { NextPage } from 'next'
-import styles from '../styles/Home.module.scss'
-import { Settings, useSettingsContext } from '../core/utils/settings';
-import { useRouter } from 'next/router';
+import type { NextPage } from 'next';
+import styles from '../styles/Home.module.scss';
+import { Settings, useSettingsContext } from '../lib/utils/settings';
 import Link from 'next/link';
 
 const Home: NextPage = () => {
-  const router = useRouter();
-  const {setSettings, settingsQueryParam, settings} = useSettingsContext()
+  const { setSettings, settingsQueryParam } = useSettingsContext();
 
-  const changeHandler = (key: keyof (Settings), value: any) => {
+  const changeHandler = (key: keyof Settings, value: any) => {
     console.log('QWEQWE');
-    setSettings(state => ({...state, [key]: value}));
-  }
+    setSettings((state) => ({ ...state, [key]: value }));
+  };
 
   return (
     <main className={styles.main}>
-      <h1 className={styles.title}>
-        Welcome to Stream Tip
-      </h1>
+      <h1 className={styles.title}>Welcome to Stream Tip</h1>
 
       <div>
-        <input placeholder="Username" required
-               onChange={x => changeHandler('username', x.target.value)}/>
-        <input placeholder="Goal Amount" type="number"
-               onChange={x => changeHandler('goalAmount', x.target.value)}/>
-        <input placeholder="Goal Description"
-               onChange={x => changeHandler('goalDescription', x.target.value)}/>
+        <input
+          placeholder="Username"
+          required
+          onChange={(x) => changeHandler('username', x.target.value)}
+        />
+        <input
+          placeholder="Goal Amount"
+          type="number"
+          onChange={(x) => changeHandler('goalAmount', x.target.value)}
+        />
+        <input
+          placeholder="Goal Description"
+          onChange={(x) => changeHandler('goalDescription', x.target.value)}
+        />
 
         <Link
           href={{
@@ -37,7 +41,7 @@ const Home: NextPage = () => {
         </Link>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
