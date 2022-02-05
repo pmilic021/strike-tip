@@ -1,6 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { getDbCollection } from '../../../../core/data/mongo-db';
-import { TipInfo } from '../../../../core/data/models';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { getDbCollection } from '../../../../lib/data/mongo-db';
+import { TipInfo } from '../../../../lib/data/models';
 
 type Data = { message: string } | TipInfo[];
 
@@ -12,20 +12,21 @@ export default async function handler(
   console.log(req.query);
 
   const username = req.query.username as string;
-  const tipsAfterTimestamp = req.query.tipsAfter ? +req.query.tipsAfter : undefined;
+  const tipsAfterTimestamp = req.query.tipsAfter
+    ? +req.query.tipsAfter
+    : undefined;
 
   const users = await getDbCollection<any>('users');
-  const user = await users.findOne({'username': username});
+  const user = await users.findOne({ username: username });
 
   if (!user) {
-    res.status(404).json({message: 'User not found'});
+    res.status(404).json({ message: 'User not found' });
     return;
   }
 
-  const result =
-    !!tipsAfterTimestamp
-      ? user.tips.filter((tip: any) => tip.createdAt > tipsAfterTimestamp)
-      : user.tips;
+  const result = !!tipsAfterTimestamp
+    ? user.tips.filter((tip: any) => tip.createdAt > tipsAfterTimestamp)
+    : user.tips;
 
   res.status(200).json(result);
 }

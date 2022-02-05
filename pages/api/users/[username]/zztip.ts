@@ -1,6 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { TipInfo } from '../../../../core/data/models';
-import { getDb } from '../../../../core/data/firebase';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { TipInfo } from '../../../../lib/data/models';
+import { getDb } from '../../../../lib/data/firebase';
 import { ref, push, set } from 'firebase/database';
 import crypto from 'crypto';
 
@@ -21,12 +21,12 @@ export default async function handler(
     id: crypto.randomUUID(),
     createdAt: new Date().getTime(),
     amount: '1 usd',
-    message: 'hello'
+    message: 'hello',
   };
 
   // TODO: think if we need to store all tips or we can just store last tip
   await push(ref(db, 'users/' + username + '/tips'), tip);
   await set(ref(db, 'users/' + username + '/last-tip'), tip);
 
-  res.status(201).json({message: 'created'});
+  res.status(201).json({ message: 'created' });
 }

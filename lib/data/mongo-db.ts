@@ -3,7 +3,7 @@ import { Document } from 'bson';
 
 export const getDb = async () => {
   const connectionString =
-    'mongodb+srv://admin:4MXorFT8WIjyGs3N@stream-tip.0szne.mongodb.net/tips?retryWrites=true&w=majority'
+    'mongodb+srv://admin:4MXorFT8WIjyGs3N@stream-tip.0szne.mongodb.net/tips?retryWrites=true&w=majority';
   const client = await MongoClient.connect(connectionString);
   console.log('connected to db');
 
