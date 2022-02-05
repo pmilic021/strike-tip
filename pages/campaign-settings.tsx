@@ -1,10 +1,9 @@
-import type { NextPage } from 'next'
+import type { NextPage } from 'next';
 import { useSettingsContext } from '../lib/utils/settings';
 import Link from 'next/link';
 
 const CampaignSettings: NextPage = () => {
-
-  const {settingsQueryParam} = useSettingsContext();
+  const { settingsQueryParam } = useSettingsContext();
 
   return (
     <main>
@@ -42,7 +41,7 @@ const CampaignSettings: NextPage = () => {
         </Link>
       </section>
     </main>
-  )
-}
+  );
+};
 
 export default CampaignSettings;
