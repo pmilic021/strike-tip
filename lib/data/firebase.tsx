@@ -44,12 +44,3 @@ export const FirebaseProvider: FC = ({ children }) => {
     <div>Loading...</div>
   );
 };
-
-<<<<<<< HEAD:core/data/firebase.tsx
-
-=======
-export const getDb = () => {
-  const app = initializeApp(firebaseConfig);
-  return getDatabase(app);
-};
->>>>>>> master:lib/data/firebase.tsx
