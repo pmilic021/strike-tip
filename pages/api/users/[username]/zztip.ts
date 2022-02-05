@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { TipInfo } from '../../../../core/data/models';
-import { getDb } from '../../../../core/data/firebase';
+import { TipInfo } from '../../../../lib/data/models';
+import { getDb } from '../../../../lib/data/firebase';
 import { ref, push, set } from 'firebase/database';
 import crypto from 'crypto';
 

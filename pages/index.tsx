@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import styles from '../styles/Home.module.scss'
-import { Settings, useSettingsContext } from '../core/utils/settings';
+import { Settings, useSettingsContext } from '../lib/utils/settings';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 

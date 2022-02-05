@@ -2,8 +2,8 @@ import '../styles/globals.scss'
 import type { AppProps } from 'next/app'
 import styles from '../styles/Home.module.scss';
 import Head from 'next/head';
-import { SettingsProvider } from '../core/utils/settings';
-import { FirebaseProvider } from '../core/data/firebase';
+import { SettingsProvider } from '../lib/utils/settings';
+import { FirebaseProvider } from '../lib/data/firebase';
 
 function MyApp({Component, pageProps}: AppProps) {
   return (

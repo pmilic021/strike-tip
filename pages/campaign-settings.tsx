@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useSettingsContext } from '../core/utils/settings';
+import { useSettingsContext } from '../lib/utils/settings';
 import Link from 'next/link';
 
 const CampaignSettings: NextPage = () => {
@@ -45,4 +45,4 @@ const CampaignSettings: NextPage = () => {
   )
 }
 
-export default CampaignSettings
+export default CampaignSettings;

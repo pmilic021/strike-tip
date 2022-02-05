@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getDbCollection } from '../../../../core/data/mongo-db';
-import { TipInfo } from '../../../../core/data/models';
+import { getDbCollection } from '../../../../lib/data/mongo-db';
+import { TipInfo } from '../../../../lib/data/models';
 
 type Data = { message: string } | TipInfo[];
 

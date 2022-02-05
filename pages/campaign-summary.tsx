@@ -1,10 +1,8 @@
 import type { NextPage } from 'next'
-import { useSettingsContext } from '../core/utils/settings';
-import { TipInfo } from '../core/data/models';
-import { useFirebaseContext } from '../core/data/firebase';
-import { useCallback, useEffect, useState } from 'react';
-import { onValue, ref } from 'firebase/database';
-import useTipsSubscription from '../core/data/use-tips-subscription';
+import { useSettingsContext } from '../lib/utils/settings';
+import { TipInfo } from '../lib/data/models';
+import { useCallback, useState } from 'react';
+import useTipsSubscription from '../lib/data/use-tips-subscription';
 
 const CampaignSummary: NextPage = () => {
 
@@ -31,4 +29,4 @@ const CampaignSummary: NextPage = () => {
   )
 }
 
-export default CampaignSummary
+export default CampaignSummary;

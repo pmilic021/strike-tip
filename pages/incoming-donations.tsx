@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
-import { useSettingsContext } from '../core/utils/settings';
-import useTipsSubscription from '../core/data/use-tips-subscription';
+import { useSettingsContext } from '../lib/utils/settings';
+import useTipsSubscription from '../lib/data/use-tips-subscription';
 import { useCallback, useState } from 'react';
-import { TipInfo } from '../core/data/models';
+import { TipInfo } from '../lib/data/models';
 
 const IncomingDonations: NextPage = () => {
 
