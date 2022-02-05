@@ -2,18 +2,16 @@ import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { Database, getDatabase } from 'firebase/database';
 
-// TODO: this rtdb is unsecured! lock it down in the dashboard
 const firebaseConfig = {
-  apiKey: 'AIzaSyCuTiA9EgY3MMc1uEUsfMxzr0xkSPoepbs',
-  authDomain: 'strike-tip.firebaseapp.com',
-  databaseURL: 'https://strike-tip-default-rtdb.europe-west1.firebasedatabase.app',
-  projectId: 'strike-tip',
-  storageBucket: 'strike-tip.appspot.com',
-  messagingSenderId: '605074407918',
-  appId: '1:605074407918:web:3da95a7f40ac86434c0eff',
-  measurementId: 'G-TN811RRB3W'
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
-
 
 const FirebaseContext = createContext<Database>({} as Database);
 export const useFirebaseContext = () => useContext(FirebaseContext);
