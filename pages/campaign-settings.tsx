@@ -30,6 +30,17 @@ const CampaignSettings: NextPage = () => {
           {`${window.location.host}/incoming-donations?${settingsQueryParam}`}
         </Link>
       </section>
+      <section>
+        <h6>Payment page</h6>
+        <Link
+          href={{
+            pathname: '/payment-page',
+            query: settingsQueryParam,
+          }}
+        >
+          {`${window.location.host}/payment-page?${settingsQueryParam}`}
+        </Link>
+      </section>
     </main>
   )
 }

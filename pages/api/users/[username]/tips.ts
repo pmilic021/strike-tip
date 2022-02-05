@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getDbCollection } from '../../../../core/data/db';
-import { UserInfo, TipInfo } from '../../../../core/data/models';
+import { getDbCollection } from '../../../../core/data/mongo-db';
+import { TipInfo } from '../../../../core/data/models';
 
 type Data = { message: string } | TipInfo[];
 
@@ -14,7 +14,7 @@ export default async function handler(
   const username = req.query.username as string;
   const tipsAfterTimestamp = req.query.tipsAfter ? +req.query.tipsAfter : undefined;
 
-  const users = await getDbCollection<UserInfo>('users');
+  const users = await getDbCollection<any>('users');
   const user = await users.findOne({'username': username});
 
   if (!user) {
@@ -24,7 +24,7 @@ export default async function handler(
 
   const result =
     !!tipsAfterTimestamp
-      ? user.tips.filter(tip => tip.createdAt > tipsAfterTimestamp)
+      ? user.tips.filter((tip: any) => tip.createdAt > tipsAfterTimestamp)
       : user.tips;
 
   res.status(200).json(result);

@@ -6,29 +6,21 @@ import { useCallback, useEffect, useState } from 'react';
 import { onValue, ref } from 'firebase/database';
 import useTipsSubscription from '../core/data/use-tips-subscription';
 
-const CampaignSummary: NextPage = () => {
-
-  const [tips, setTips] = useState<TipInfo[]>([]);
+const PaymentPage: NextPage = () => {
   const {settings} = useSettingsContext();
-
-  const callback = useCallback(tip => {
-    console.log(tip);
-    setTips(t => [...t, tip]);
-  }, [setTips]);
-
-  useTipsSubscription(settings.username, callback);
 
   return (
     <main>
       <div>{JSON.stringify(settings)}</div>
       <section>
-        <label>Campaign summary widget</label>
+        <button onClick={() => getPaymentStatus(settings.username)}>ZZTip</button>
       </section>
-      <div>
-        {tips.map(tip => <div key={tip.id}>{JSON.stringify(tip)}</div>)}
-      </div>
     </main>
   )
 }
 
-export default CampaignSummary
+const getPaymentStatus = async (username: string): Promise<void> => {
+  await fetch(`/api/users/${username}/zztip`);
+};
+
+export default PaymentPage
