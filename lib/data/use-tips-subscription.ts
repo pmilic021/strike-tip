@@ -12,7 +12,7 @@ export default function useTipsSubscription(
   const timestampFilter = useMemo(() => new Date().getTime(), []);
 
   useEffect(() => {
-    const tipsRef = ref(db, `users/${username}/last-tip`);
+    const tipsRef = ref(db, `latest-tip/${username}`);
     const unsubscribe = onValue(tipsRef, (snapshot) => {
       const data: DonationInfo | undefined = snapshot.val();
       console.log('Incoming tip:', data);
