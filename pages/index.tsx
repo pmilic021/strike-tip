@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import styles from '../styles/Home.module.scss';
+// import styles from '../styles/Home.module.scss';
 import { Settings, useSettingsContext } from '../lib/utils/settings';
 import Link from 'next/link';
 
@@ -12,8 +12,8 @@ const Home: NextPage = () => {
   };
 
   return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>Welcome to Stream Tip</h1>
+    <main>
+      <h1>Welcome to Stream Tip</h1>
 
       <div>
         <input
