@@ -13,7 +13,7 @@ export interface Invoice {
 }
 
 export interface CreateInvoice {
-  correlationId: string;
-  description: string;
+  correlationId?: string;
+  description?: string;
   amount: CurrencyAmount;
 }
