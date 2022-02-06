@@ -16,7 +16,5 @@ export const FirebaseProvider: FC = ({ children }) => {
 
   return db ? (
     <FirebaseContext.Provider value={db}>{children}</FirebaseContext.Provider>
-  ) : (
-    <div>Loading...</div>
-  );
+  ) : null;
 };

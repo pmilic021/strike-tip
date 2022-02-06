@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
-import styles from '../styles/Home.module.scss';
+// import styles from '../styles/Home.module.scss';
 import { Settings, useSettingsContext } from '../lib/utils/settings';
 import Link from 'next/link';
+import { Input } from '@mui/material';
 
 const Home: NextPage = () => {
   const { setSettings, settingsQueryParam } = useSettingsContext();
@@ -12,21 +13,21 @@ const Home: NextPage = () => {
   };
 
   return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>Welcome to Stream Tip</h1>
+    <main>
+      <h1>Welcome to Stream Tip</h1>
 
       <div>
-        <input
+        <Input
           placeholder="Username"
           required
           onChange={(x) => changeHandler('username', x.target.value)}
         />
-        <input
+        <Input
           placeholder="Goal Amount"
           type="number"
           onChange={(x) => changeHandler('goalAmount', x.target.value)}
         />
-        <input
+        <Input
           placeholder="Goal Description"
           onChange={(x) => changeHandler('goalDescription', x.target.value)}
         />
