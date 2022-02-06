@@ -37,7 +37,7 @@ const CampaignSettings: NextPage = () => {
             query: settingsQueryParam,
           }}
         >
-          {`${window.location.host}/donation?${settingsQueryParam}`}
+          {`${window.location.host}/campaign-donation?${settingsQueryParam}`}
         </Link>
       </section>
     </main>

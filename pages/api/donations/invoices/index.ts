@@ -1,13 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Donation, ErrorResponse } from 'lib/api';
-import { Currency, strikeClient, StrikeError } from '../../lib/strike-api';
+import { Currency, Invoice, strikeClient, StrikeError } from 'lib/strike-api';
+import { getDb, getEditorAuth } from 'lib/data/firebase-setup';
+import { ref, set } from 'firebase/database';
 
-type Data =
-  | {
-      message: string;
-    }
-  | ErrorResponse;
+type Data = Invoice | ErrorResponse;
 
 export default async function handler(
   req: NextApiRequest,
@@ -26,7 +24,14 @@ export default async function handler(
         description: JSON.stringify(description),
       }
     );
-    res.status(201).json({ message: 'Invoice created' });
+
+    const db = getDb();
+    await getEditorAuth();
+    await set(ref(db, `invoices/${response.invoiceId}`), {
+      state: response.state,
+    });
+
+    res.status(201).json(response);
   } catch (e) {
     console.error(e);
     if (e instanceof StrikeError) {

@@ -1,4 +1,4 @@
-import { CreateInvoice, Invoice } from './models/invoice';
+import { CreateInvoice, Invoice, InvoiceQuote } from './models/invoice';
 import { ErrorResponse } from './models/error';
 import { PageResults, RequestParams } from './models/pagination';
 
@@ -82,8 +82,8 @@ const createInvoiceForReceiver = (
     body: request,
   });
 
-const requestQuote = (invoiceId: string): Promise<Invoice> =>
-  strikeFetch<Invoice>(`v1/invoices/${invoiceId}/quote`, {
+const requestQuote = (invoiceId: string): Promise<InvoiceQuote> =>
+  strikeFetch<InvoiceQuote>(`v1/invoices/${invoiceId}/quote`, {
     method: 'POST',
   });
 

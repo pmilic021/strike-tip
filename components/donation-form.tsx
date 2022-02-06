@@ -1,26 +1,30 @@
-import type { NextPage } from 'next';
 import { useSettingsContext } from '../lib/utils/settings';
-import { apiClient } from 'lib/api/client';
-import { Donation } from '../lib/api';
 import { useForm } from 'react-hook-form';
+import { Donation } from '../lib/api';
+import { useState } from 'react';
 
 type FormData = Omit<Donation, 'receiver'>;
 
-const Donation: NextPage = () => {
+type Props = { onSubmit: (donation: Donation) => Promise<void> };
+
+export const DonationForm = (props: Props) => {
   const { settings } = useSettingsContext();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>();
+  const [error, setError] = useState<string | null>(null);
 
-  const donate = async (donation: FormData) => {
-    console.log('donation: ', donation);
-    const response = await apiClient.donate({
-      ...donation,
-      receiver: settings.username,
-    });
-    console.log('response: ', response);
+  const onSubmit = async (values: FormData) => {
+    try {
+      setError(null);
+      await props.onSubmit({ ...values, receiver: settings.username });
+    } catch (e) {
+      const message =
+        e instanceof Error ? e.message : 'Error. Please try again.';
+      setError(message);
+    }
   };
 
   return (
@@ -28,12 +32,13 @@ const Donation: NextPage = () => {
       <h1>Donate to {settings.username}&apos;s campaign:</h1>
       <div>{JSON.stringify(settings)}</div>
       <div>
-        <form onSubmit={handleSubmit(donate)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label>
               Amount:{' '}
               <input
                 type="number"
+                step={0.01}
                 {...register('amount', { required: true, min: 1 })}
                 placeholder="Amount in USD"
               />
@@ -69,21 +74,13 @@ const Donation: NextPage = () => {
             </label>
           </div>
           <div>
-            <button type="submit">Donate</button>
+            <button type="submit" disabled={isSubmitting}>
+              Donate
+            </button>
           </div>
+          {error && <div>{error}</div>}
         </form>
       </div>
-      {/*<section>*/}
-      {/*  <button onClick={() => getPaymentStatus(settings.username)}>*/}
-      {/*    ZZTip*/}
-      {/*  </button>*/}
-      {/*</section>*/}
     </main>
   );
 };
-
-const getPaymentStatus = async (username: string): Promise<void> => {
-  await fetch(`/api/users/${username}/zztip`);
-};
-
-export default Donation;

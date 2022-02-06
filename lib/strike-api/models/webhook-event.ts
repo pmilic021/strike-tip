@@ -7,7 +7,7 @@ export enum EventType {
 
 export type WebhookEvent = {
   id: string;
-  created: Date;
+  created: string;
   deliverySuccess: boolean;
   webhookVersion: string;
 } & (

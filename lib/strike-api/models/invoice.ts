@@ -1,10 +1,11 @@
 import { CurrencyAmount } from './currency-amount';
+import { Currency } from './currency';
 
 export interface Invoice {
   invoiceId: string;
   amount: CurrencyAmount;
   state: 'UNPAID' | 'PENDING' | 'PAID' | 'CANCELLED';
-  created: Date;
+  created: string;
   correlationId: string;
   description: string;
   issuerId: string;
@@ -16,4 +17,20 @@ export interface CreateInvoice {
   correlationId?: string;
   description?: string;
   amount: CurrencyAmount;
+}
+
+export interface InvoiceQuote {
+  quoteId: string;
+  description?: string;
+  lnInvoice: string;
+  onchainAddress?: string;
+  expiration: string;
+  expirationInSec: number;
+  sourceAmount: CurrencyAmount;
+  targetAmount: CurrencyAmount;
+  conversionRate: {
+    amount: string;
+    sourceCurrency: Currency;
+    targetCurrency: Currency;
+  };
 }
