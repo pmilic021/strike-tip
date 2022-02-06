@@ -1,7 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { EventType, verifyRequest, WebhookEvent } from 'lib/strike-api';
+import {
+  EventType,
+  strikeClient,
+  verifyRequest,
+  WebhookEvent,
+} from 'lib/strike-api';
 import getRawBody from 'raw-body';
+import { ref, set } from 'firebase/database';
+import { getDb, getEditorAuth } from '../../../lib/data/firebase-setup';
 
 type Data = { message: string };
 
@@ -13,6 +20,17 @@ export const config = {
   api: {
     bodyParser: false,
   },
+};
+
+const handleInvoiceUpdated = async (invoiceId: string) => {
+  console.log('handling invoice updated');
+  const invoice = await strikeClient.getInvoice(invoiceId);
+  const db = getDb();
+  await getEditorAuth();
+  await set(ref(db, `invoices/${invoiceId}`), {
+    state: invoice.state,
+  });
+  console.log('handled invoice updated');
 };
 
 export default async function handler(
@@ -39,7 +57,9 @@ export default async function handler(
     if (event.eventType === EventType.InvoiceCreated) {
       console.log('handling invoice created');
     } else if (event.eventType === EventType.InvoiceUpdated) {
-      console.log('handling invoice updated');
+      if (event.data.changes.includes('state')) {
+        await handleInvoiceUpdated(event.data.entityId);
+      }
     }
 
     res.status(204).end();

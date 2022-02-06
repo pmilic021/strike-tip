@@ -1,4 +1,5 @@
 import { Donation } from './models/donation';
+import { Invoice, InvoiceQuote } from '../strike-api';
 
 const apiFetch = async <T>(
   path: string,
@@ -26,13 +27,19 @@ const apiFetch = async <T>(
   return responseData as T;
 };
 
-const donate = async (donation: Donation) => {
-  await apiFetch(`/api/donations`, {
+const createDonationInvoice = async (donation: Donation) =>
+  apiFetch<Invoice>('/api/donations/invoices', {
     method: 'POST',
     body: donation,
   });
-};
+
+const createDonationQuote = async (invoiceId: string) =>
+  apiFetch<InvoiceQuote>('/api/donations/quotes', {
+    method: 'POST',
+    body: { invoiceId },
+  });
 
 export const apiClient = {
-  donate,
+  createDonationInvoice,
+  createDonationQuote,
 };
