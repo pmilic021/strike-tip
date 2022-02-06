@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import styles from '../styles/Home.module.scss';
 import Head from 'next/head';
 import { SettingsProvider } from '../lib/utils/settings';
-import { FirebaseProvider } from '../lib/data/firebase';
+import { FirebaseProvider } from '../lib/data/firebase-context';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

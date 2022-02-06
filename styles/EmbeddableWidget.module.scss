@@ -1,0 +1,27 @@
+.embeddableWidget {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.topDonor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  font-size: 30px;
+  color: white;
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000,
+    -1px -1px 0 #000;
+}
+
+.topDonation {
+  .amount {
+    color: red;
+  }
+
+  .donor {
+    margin-left: 8px;
+  }
+}

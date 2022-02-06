@@ -1,15 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { TipInfo } from '../../../../lib/data/models';
-import { getDb } from '../../../../lib/data/firebase';
-import { ref, push, set } from 'firebase/database';
+import { DonationInfo } from '../../../../lib/data/models';
+import { ref, set } from 'firebase/database';
 import crypto from 'crypto';
+import { getEditorAuth, getDb } from '../../../../lib/data/firebase-setup';
 
-type Data = { message: string } | TipInfo[];
+type Data = { message: string } | DonationInfo[];
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  await getEditorAuth();
   const db = getDb();
 
   console.log('zztips api. req query:');
@@ -17,16 +18,14 @@ export default async function handler(
 
   const username = req.query.username as string;
 
-  const tip: TipInfo = {
+  const tip: DonationInfo = {
     id: crypto.randomUUID(),
     createdAt: new Date().getTime(),
-    amount: '1 usd',
+    amount: 1,
     message: 'hello',
   };
 
-  // TODO: think if we need to store all tips or we can just store last tip
-  await push(ref(db, 'users/' + username + '/tips'), tip);
-  await set(ref(db, 'users/' + username + '/last-tip'), tip);
+  await set(ref(db, 'latest-tip/' + username), tip);
 
   res.status(201).json({ message: 'created' });
 }
