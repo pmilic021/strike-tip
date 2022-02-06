@@ -34,6 +34,14 @@ const strikeFetch = async <T>(
       ? JSON.stringify(params.body)
       : (params.body as RequestInit['body']),
   });
+
+  if (
+    !response.ok &&
+    !response.headers.get('Content-Type')?.includes('application/json')
+  ) {
+    throw new Error(response.statusText);
+  }
+
   const responseData = await response.json();
 
   if (!response.ok) {
