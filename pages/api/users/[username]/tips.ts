@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getDbCollection } from '../../../../lib/data/mongo-db';
-import { TipInfo } from '../../../../lib/data/models';
+import { DonationInfo } from '../../../../lib/data/models';
 
-type Data = { message: string } | TipInfo[];
+type Data = { message: string } | DonationInfo[];
 
 export default async function handler(
   req: NextApiRequest,

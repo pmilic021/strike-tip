@@ -5,9 +5,11 @@
 //   tips: TipInfo[]; // TODO: optimize this - currently it fetches all tips at once
 // }
 
-export interface TipInfo {
+export interface DonationInfo {
   id: string;
   createdAt: number;
-  amount: string;
+  amount: number;
+  // currency: string; TODO: Do we need this
   message?: string;
+  donor?: string;
 }

@@ -2,11 +2,11 @@ import type { NextPage } from 'next';
 import { useSettingsContext } from '../lib/utils/settings';
 import useTipsSubscription from '../lib/data/use-tips-subscription';
 import { useCallback, useState } from 'react';
-import { TipInfo } from '../lib/data/models';
+import { DonationInfo } from '../lib/data/models';
 
 const IncomingDonations: NextPage = () => {
   const { settings } = useSettingsContext();
-  const [lastTip, setLastTip] = useState<TipInfo | undefined>();
+  const [lastTip, setLastTip] = useState<DonationInfo | undefined>();
 
   const callback = useCallback(
     (tip) => {

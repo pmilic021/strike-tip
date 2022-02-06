@@ -1,11 +1,11 @@
-import { useFirebaseContext } from './firebase';
+import { useFirebaseContext } from './firebase-context';
 import { useEffect, useMemo } from 'react';
 import { onValue, ref } from 'firebase/database';
-import { TipInfo } from './models';
+import { DonationInfo } from './models';
 
 export default function useTipsSubscription(
   username: string,
-  callback: (tip: TipInfo) => void
+  callback: (tip: DonationInfo) => void
 ) {
   const db = useFirebaseContext();
 
@@ -14,7 +14,7 @@ export default function useTipsSubscription(
   useEffect(() => {
     const tipsRef = ref(db, `users/${username}/last-tip`);
     const unsubscribe = onValue(tipsRef, (snapshot) => {
-      const data: TipInfo | undefined = snapshot.val();
+      const data: DonationInfo | undefined = snapshot.val();
       console.log('Incoming tip:', data);
 
       // We want to prevent stale tips from triggering callback. That can happen on initial subscription
