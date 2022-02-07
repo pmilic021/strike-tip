@@ -116,7 +116,7 @@ export const DonationPayment = (props: Props) => {
         <Button
           colorScheme="teal"
           onClick={createNewQuote}
-          disabled={quoteExtendingState.inProgress}
+          isLoading={quoteExtendingState.inProgress}
         >
           Generate new quote
         </Button>
