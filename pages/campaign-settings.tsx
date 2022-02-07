@@ -1,46 +1,37 @@
 import type { NextPage } from 'next';
 import { useSettingsContext } from '../lib/utils/settings';
-import Link from 'next/link';
+import { Container, Flex, VStack } from '@chakra-ui/react';
+import LinkItem from '../components/linkItem';
 
 const CampaignSettings: NextPage = () => {
   const { settingsQueryParam } = useSettingsContext();
 
   return (
-    <main>
-      <section>
-        <h6>Campaign summary widget</h6>
-        <Link
-          href={{
-            pathname: '/campaign-summary',
-            query: settingsQueryParam,
-          }}
-        >
-          {`${window.location.host}/campaign-summary?${settingsQueryParam}`}
-        </Link>
-      </section>
-      <section>
-        <h6>Incoming donations widget</h6>
-        <Link
-          href={{
-            pathname: '/incoming-donations',
-            query: settingsQueryParam,
-          }}
-        >
-          {`${window.location.host}/incoming-donations?${settingsQueryParam}`}
-        </Link>
-      </section>
-      <section>
-        <h6>Payment page</h6>
-        <Link
-          href={{
-            pathname: '/campaign-donation',
-            query: settingsQueryParam,
-          }}
-        >
-          {`${window.location.host}/campaign-donation?${settingsQueryParam}`}
-        </Link>
-      </section>
-    </main>
+    <Container maxW="containerxl" p={0}>
+      <VStack>
+        <LinkItem
+          absPath={`${window.location.host}/campaign-summary?${settingsQueryParam}`}
+          header="Campaign summary"
+          pathname="/campaign-summary"
+          query={settingsQueryParam}
+          image="campaign-summary.png"
+        />
+        <LinkItem
+          absPath={`${window.location.host}/incoming-donations?${settingsQueryParam}`}
+          header="Incoming donations"
+          pathname="/incoming-donations"
+          query={settingsQueryParam}
+          image="incoming-donations.png"
+        />
+        <LinkItem
+          absPath={`${window.location.host}/campaign-donation?${settingsQueryParam}`}
+          header="Payment page"
+          pathname="/campaign-donation"
+          query={settingsQueryParam}
+          image="campaign-donation.svg"
+        />
+      </VStack>
+    </Container>
   );
 };
 
