@@ -9,6 +9,7 @@ import {
 import getRawBody from 'raw-body';
 import { ref, set } from 'firebase/database';
 import { getDb, getEditorAuth } from '../../../lib/data/firebase-setup';
+import { DonationInfo } from '../../../lib/data/models';
 
 type Data = { message: string };
 
@@ -25,11 +26,24 @@ export const config = {
 const handleInvoiceUpdated = async (invoiceId: string) => {
   console.log('handling invoice updated');
   const invoice = await strikeClient.getInvoice(invoiceId);
+  const receiver = await strikeClient.getAccountProfile(invoice.receiverId);
   const db = getDb();
   await getEditorAuth();
   await set(ref(db, `invoices/${invoiceId}`), {
     state: invoice.state,
   });
+  const donationDetails = JSON.parse(invoice.description) as {
+    message: string;
+    signature: string;
+  };
+  const donation: DonationInfo = {
+    id: Date.now().toString(),
+    createdAt: Date.now(),
+    amount: +invoice.amount.amount,
+    message: donationDetails.message,
+    donor: donationDetails.signature,
+  };
+  await set(ref(db, 'latest-tip/' + receiver.handle), donation);
   console.log('handled invoice updated');
 };
 

@@ -99,6 +99,12 @@ const getAccountProfileByHandle = (
   );
 };
 
+const getAccountProfile = (accountId: string): Promise<AccountProfile> => {
+  return strikeFetch<AccountProfile>(`v1/accounts/${accountId}/profile`, {
+    method: 'GET',
+  });
+};
+
 export const strikeClient = {
   getInvoices,
   getInvoice,
@@ -106,4 +112,5 @@ export const strikeClient = {
   createInvoiceForReceiver,
   requestQuote,
   getAccountProfileByHandle,
+  getAccountProfile,
 };
