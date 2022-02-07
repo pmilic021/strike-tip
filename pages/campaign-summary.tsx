@@ -10,6 +10,13 @@ import QR from 'qrcode.react';
 
 const TOP_DONORS_COUNT = 3;
 
+const buildFullUrl = (url: string) => {
+  if (url.startsWith('http')) {
+    return url;
+  }
+  return `https://${url}`;
+};
+
 const CampaignSummary: NextPage = () => {
   const { settings, settingsQueryParam } = useSettingsContext();
 
@@ -39,7 +46,9 @@ const CampaignSummary: NextPage = () => {
           settings.goalDescription
         )}
       <QR
-        value={`${window.location.host}/campaign-donation?${settingsQueryParam}`}
+        value={buildFullUrl(
+          `${window.location.host}/campaign-donation?${settingsQueryParam}`
+        )}
       />
       <section className={styles.topDonor}>
         <label>TOP DONORS:</label>
