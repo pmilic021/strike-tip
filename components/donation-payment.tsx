@@ -85,7 +85,7 @@ export const DonationPayment = (props: Props) => {
   return (
     <Container centerContent>
       <Heading mb={8}>Donate to {settings.username}:</Heading>
-      <Heading mb={8} size="md">
+      <Heading mb={8} size="md" color="teal">
         Amount: {invoice.amount.amount} {invoice.amount.currency}
       </Heading>
 
