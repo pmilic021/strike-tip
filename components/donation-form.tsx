@@ -2,8 +2,26 @@ import { useSettingsContext } from '../lib/utils/settings';
 import { useForm } from 'react-hook-form';
 import { Donation } from '../lib/api';
 import { useState } from 'react';
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  Button,
+  CloseButton,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  NumberInput,
+  NumberInputField,
+} from '@chakra-ui/react';
+import { Input } from '@chakra-ui/input';
 
-type FormData = Omit<Donation, 'receiver'>;
+type FormData = {
+  amount: string;
+  message: string;
+  signature?: string;
+};
 
 type Props = { onSubmit: (donation: Donation) => Promise<void> };
 
@@ -19,7 +37,12 @@ export const DonationForm = (props: Props) => {
   const onSubmit = async (values: FormData) => {
     try {
       setError(null);
-      await props.onSubmit({ ...values, receiver: settings.username });
+      await props.onSubmit({
+        receiver: settings.username,
+        amount: +(+values.amount).toFixed(2),
+        description: values.message,
+        signature: values.signature,
+      });
     } catch (e) {
       const message =
         e instanceof Error ? e.message : 'Error. Please try again.';
@@ -28,59 +51,60 @@ export const DonationForm = (props: Props) => {
   };
 
   return (
-    <main>
-      <h1>Donate to {settings.username}&apos;s campaign:</h1>
-      <div>{JSON.stringify(settings)}</div>
-      <div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label>
-              Amount:{' '}
-              <input
-                type="number"
-                step={0.01}
-                {...register('amount', { required: true, min: 1 })}
-                placeholder="Amount in USD"
-              />
-              {errors.amount?.type === 'required' && (
-                <span>Amount is required</span>
-              )}
-              {errors.amount?.type === 'min' && (
-                <span>Min amount is 1 USD</span>
-              )}
-            </label>
-          </div>
-          <div>
-            <label>
-              Description:{' '}
-              <input
-                type="text"
-                {...register('description', { required: true })}
-                placeholder="Message for the recipient"
-              />
-              {errors.description?.type === 'required' && (
-                <span>Description is required</span>
-              )}
-            </label>
-          </div>
-          <div>
-            <label>
-              Signature:{' '}
-              <input
-                type="text"
-                {...register('signature')}
-                placeholder="Your signature (optional)"
-              />
-            </label>
-          </div>
-          <div>
-            <button type="submit" disabled={isSubmitting}>
-              Donate
-            </button>
-          </div>
-          {error && <div>{error}</div>}
-        </form>
-      </div>
-    </main>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Heading mb={8}>Donate to {settings.username}&apos;s campaign:</Heading>
+      <FormControl isInvalid={!!errors.amount} mb={4}>
+        <FormLabel htmlFor="amount">Amount in $</FormLabel>
+        <NumberInput precision={2}>
+          <NumberInputField
+            id="amount"
+            placeholder="Amount"
+            {...register('amount', { min: 1, required: true })}
+          />
+        </NumberInput>
+        <FormErrorMessage>
+          {errors.amount?.type == 'min' ? 'Min amount is $1.00' : null}
+          {errors.amount?.type == 'required' ? 'Amount is required' : null}
+        </FormErrorMessage>
+      </FormControl>
+
+      <FormControl isInvalid={!!errors.message} mb={4}>
+        <FormLabel htmlFor="description">Message for the recipient</FormLabel>
+        <Input
+          id="description"
+          placeholder="Message"
+          {...register('message', {
+            required: 'Message is required',
+          })}
+        />
+        <FormErrorMessage>
+          {errors.message && errors.message.message}
+        </FormErrorMessage>
+      </FormControl>
+
+      <FormControl mb={4}>
+        <FormLabel htmlFor="signature">Your signature</FormLabel>
+        <Input
+          id="signature"
+          placeholder="Signature"
+          {...register('signature')}
+        />
+      </FormControl>
+      <Button mt={4} colorScheme="teal" isLoading={isSubmitting} type="submit">
+        Donate
+      </Button>
+      {error && (
+        <Alert status="error" mt={4}>
+          <AlertIcon />
+          <AlertDescription>{error}</AlertDescription>
+          <CloseButton
+            position="absolute"
+            right="8px"
+            top="8px"
+            onClick={() => setError(null)}
+          />
+        </Alert>
+      )}
+    </form>
   );
 };
