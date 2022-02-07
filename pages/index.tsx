@@ -105,7 +105,7 @@ const Home: NextPage = () => {
               <NumberInputField
                 id="goalAmount"
                 placeholder="Goal amount"
-                {...register('goalAmount', { min: 1 })}
+                {...register('goalAmount', { min: 1, required: true })}
               />
             </NumberInput>
             <FormErrorMessage>
