@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { SettingsProvider } from '../lib/utils/settings';
 import { FirebaseProvider } from '../lib/data/firebase-context';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, CSSReset } from '@chakra-ui/react';
 import { theme } from 'styles/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -17,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
 
       <ChakraProvider theme={theme}>
+        <CSSReset />
         <SettingsProvider>
           <FirebaseProvider>
             <Component {...pageProps} />
