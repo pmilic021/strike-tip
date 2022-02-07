@@ -23,6 +23,7 @@ export default async function handler(
     createdAt: new Date().getTime(),
     amount: 1,
     message: 'hello',
+    donor: 'MrJack',
   };
 
   await set(ref(db, 'latest-tip/' + username), tip);

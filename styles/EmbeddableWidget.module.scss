@@ -48,3 +48,28 @@
     }
   }
 }
+
+.incomingDonation {
+  animation: col 2s ease-in-out infinite alternate;
+
+  font-size: 26px;
+  font-weight: bold;
+  @include outline-text;
+
+  .amount {
+    color: red;
+    font-size: 30px;
+  }
+}
+
+@keyframes col {
+  0% {
+    background-color: rgba(226, 230, 173, 0.5);
+  }
+  50% {
+    background-color: rgba(230, 173, 173, 0.5);
+  }
+  100% {
+    background-color: rgba(214, 173, 230, 0.5);
+  }
+}
