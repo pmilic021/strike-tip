@@ -12,8 +12,7 @@ import NextLink from 'next/link';
 import { useCallback, useState } from 'react';
 
 export default function LinkItem({ header, pathname, query, absPath, image }) {
-  const [value, setValue] = useState(absPath);
-  const { hasCopied, onCopy } = useClipboard(value);
+  const { hasCopied, onCopy } = useClipboard(absPath);
 
   return (
     <HStack spacing="14px">
