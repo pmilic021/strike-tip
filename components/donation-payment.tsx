@@ -7,6 +7,20 @@ import { useTimer } from 'react-timer-hook';
 import { Timer } from './timer';
 import { onValue, ref } from 'firebase/database';
 import { useFirebaseContext } from 'lib/data/firebase-context';
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  Box,
+  Button,
+  CloseButton,
+  Container,
+  Heading,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
+import { CopyIcon } from '@chakra-ui/icons';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 type Props = {
   invoice: Invoice;
@@ -24,10 +38,11 @@ export const DonationPayment = (props: Props) => {
   const [quoteExtendingState, setQuoteExtendingState] =
     useState<QuoteExtendingState>({ inProgress: false });
   const expiry = new Date(quote.expiration);
-  const timer = useTimer({
+  const { seconds, minutes, hours, days, isRunning, restart } = useTimer({
     expiryTimestamp: expiry,
   });
-  const { seconds, minutes, hours, days, isRunning, restart } = timer;
+  const expired = !isRunning;
+  const toast = useToast();
 
   useEffect(() => {
     const invoicesRef = ref(db, `invoices/${invoice.invoiceId}`);
@@ -68,42 +83,88 @@ export const DonationPayment = (props: Props) => {
   };
 
   return (
-    <main>
-      <h1>Payment to {settings.username}</h1>
-      <br />
-      <p>
+    <Container centerContent>
+      <Heading mb={8}>Donate to {settings.username}:</Heading>
+      <Heading mb={8} size="md" color="teal">
         Amount: {invoice.amount.amount} {invoice.amount.currency}
-      </p>
-      <br />
-      <QR value={quote.lnInvoice} />
-      <br />
-      {quote.lnInvoice}
+      </Heading>
+
+      <Box opacity={expired ? 0.3 : 1}>
+        <QR value={quote.lnInvoice} />
+      </Box>
+
       <div>
-        {isRunning ? (
-          <>
-            Quote expires in{' '}
+        {!expired ? (
+          <Text mt={4} fontWeight="bold" color="#DD6B20">
+            Expires in{' '}
             <Timer
               days={days}
               hours={hours}
               minutes={minutes}
               seconds={seconds}
             />
-          </>
+          </Text>
         ) : (
-          'Quote expired'
+          <Alert status="warning" my={4}>
+            <AlertIcon />
+            Quote expired
+          </Alert>
         )}
       </div>
-      {!isRunning ? (
-        <button
+
+      {expired ? (
+        <Button
+          colorScheme="teal"
           onClick={createNewQuote}
-          disabled={quoteExtendingState.inProgress}
+          isLoading={quoteExtendingState.inProgress}
         >
           Generate new quote
-        </button>
+        </Button>
       ) : null}
-      {quoteExtendingState.error ? (
-        <div>{quoteExtendingState.error}</div>
+
+      {quoteExtendingState.error && (
+        <Alert status="error" mt={4}>
+          <AlertIcon />
+          <AlertDescription>{quoteExtendingState.error}</AlertDescription>
+          <CloseButton
+            position="absolute"
+            right="8px"
+            top="8px"
+            onClick={() =>
+              setQuoteExtendingState((current) => ({
+                inProgress: current.inProgress,
+              }))
+            }
+          />
+        </Alert>
+      )}
+      {!expired ? (
+        <Box
+          mt={8}
+          maxWidth={300}
+          background="black"
+          display="flex"
+          flexDir="row"
+          alignItems="center"
+          p={4}
+        >
+          <Text color="gray.300" isTruncated>
+            {quote.lnInvoice}
+          </Text>
+          <CopyToClipboard
+            text={quote.lnInvoice}
+            onCopy={() => {
+              toast({
+                title: 'Copied to clipboard',
+                status: 'success',
+                duration: 3000,
+              });
+            }}
+          >
+            <CopyIcon color="gray.300" ml={1} cursor="pointer" />
+          </CopyToClipboard>
+        </Box>
       ) : null}
-    </main>
+    </Container>
   );
 };

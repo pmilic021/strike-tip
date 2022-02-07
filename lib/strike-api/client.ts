@@ -1,6 +1,7 @@
 import { CreateInvoice, Invoice, InvoiceQuote } from './models/invoice';
 import { ErrorResponse } from './models/error';
 import { PageResults, RequestParams } from './models/pagination';
+import { AccountProfile } from './models/account-profile';
 
 const baseUrl = process.env.STRIKE_API_URL;
 const strikeApiKey = process.env.STRIKE_API_KEY;
@@ -87,10 +88,22 @@ const requestQuote = (invoiceId: string): Promise<InvoiceQuote> =>
     method: 'POST',
   });
 
+const getAccountProfileByHandle = (
+  accountHandle: string
+): Promise<AccountProfile> => {
+  return strikeFetch<AccountProfile>(
+    `v1/accounts/handle/${accountHandle}/profile`,
+    {
+      method: 'GET',
+    }
+  );
+};
+
 export const strikeClient = {
   getInvoices,
   getInvoice,
   createInvoice,
   createInvoiceForReceiver,
   requestQuote,
+  getAccountProfileByHandle,
 };

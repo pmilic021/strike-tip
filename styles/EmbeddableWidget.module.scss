@@ -1,27 +1,75 @@
-.embeddableWidget {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.topDonor {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  font-size: 30px;
+@mixin outline-text {
   color: white;
   text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000,
     -1px -1px 0 #000;
 }
 
-.topDonation {
+.embeddableWidget {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.goalProgress,
+.topDonor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.goalProgress {
+  width: 256px;
+  font-size: 20px;
+
+  @include outline-text;
+
+  .progressBar {
+    width: 100%;
+  }
+}
+
+.topDonor {
+  font-size: 30px;
+
+  @include outline-text;
+
+  .topDonation {
+    font-size: 26px;
+
+    .amount {
+      color: red;
+    }
+
+    .donor {
+      margin-left: 8px;
+    }
+  }
+}
+
+.incomingDonation {
+  animation: col 2s ease-in-out infinite alternate;
+
+  font-size: 26px;
+  font-weight: bold;
+  @include outline-text;
+
   .amount {
     color: red;
+    font-size: 30px;
   }
+}
 
-  .donor {
-    margin-left: 8px;
+@keyframes col {
+  0% {
+    background-color: rgba(226, 230, 173, 0.5);
+  }
+  50% {
+    background-color: rgba(230, 173, 173, 0.5);
+  }
+  100% {
+    background-color: rgba(214, 173, 230, 0.5);
   }
 }
