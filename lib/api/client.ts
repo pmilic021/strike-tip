@@ -39,7 +39,13 @@ const createDonationQuote = async (invoiceId: string) =>
     body: { invoiceId },
   });
 
+const getAccountProfile = async (username: string) =>
+  apiFetch<InvoiceQuote>(`/api/users/${username}/profile`, {
+    method: 'GET',
+  });
+
 export const apiClient = {
   createDonationInvoice,
   createDonationQuote,
+  getAccountProfile,
 };

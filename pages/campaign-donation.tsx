@@ -6,6 +6,7 @@ import { DonationPayment } from '../components/donation-payment';
 import { DonationSuccess } from '../components/donation-success';
 import { Donation } from '../lib/api';
 import { Invoice, InvoiceQuote } from '../lib/strike-api';
+import Layout from '../components/layout';
 
 type State =
   | {
@@ -25,6 +26,7 @@ const CampaignDonation: NextPage = () => {
 
   const donate = async (donation: Donation) => {
     const invoice = await apiClient.createDonationInvoice(donation);
+    console.log('invoice', invoice);
     const quote = await apiClient.createDonationQuote(invoice.invoiceId);
     setState({ status: 'pending_payment', invoice, quote });
   };
@@ -33,21 +35,23 @@ const CampaignDonation: NextPage = () => {
     setState({ status: 'donated' });
   }, []);
 
-  if (state.status == 'initial') {
-    return <DonationForm onSubmit={donate} />;
-  } else if (state.status == 'pending_payment') {
-    return (
-      <DonationPayment
-        invoice={state.invoice}
-        quote={state.quote}
-        onPaid={onPaid}
-      />
-    );
-  } else {
-    return (
-      <DonationSuccess onDonateAgain={() => setState({ status: 'initial' })} />
-    );
-  }
+  return (
+    <Layout>
+      {state.status == 'initial' ? <DonationForm onSubmit={donate} /> : null}
+      {state.status == 'pending_payment' ? (
+        <DonationPayment
+          invoice={state.invoice}
+          quote={state.quote}
+          onPaid={onPaid}
+        />
+      ) : null}
+      {state.status == 'donated' ? (
+        <DonationSuccess
+          onDonateAgain={() => setState({ status: 'initial' })}
+        />
+      ) : null}
+    </Layout>
+  );
 };
 
 export default CampaignDonation;

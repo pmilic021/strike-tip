@@ -15,6 +15,7 @@ import Layout from 'components/layout';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { apiClient } from '../lib/api';
 
 type FormData = {
   username: string;
@@ -31,6 +32,15 @@ const Home: NextPage = () => {
     register,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<FormData>();
+
+  const userExists = async (username: string) => {
+    try {
+      await apiClient.getAccountProfile(username);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
 
   const onSubmit = async (values: FormData) => {
     setSettings({
@@ -64,11 +74,17 @@ const Home: NextPage = () => {
               id="username"
               placeholder="Strike username"
               {...register('username', {
-                required: 'This is required',
+                required: true,
+                validate: userExists,
               })}
             />
             <FormErrorMessage>
-              {errors.username && errors.username.message}
+              {errors.username?.type === 'required'
+                ? 'Username is required'
+                : null}
+              {errors.username?.type === 'validate'
+                ? 'Account not found'
+                : null}
             </FormErrorMessage>
           </FormControl>
 
@@ -93,7 +109,7 @@ const Home: NextPage = () => {
               />
             </NumberInput>
             <FormErrorMessage>
-              {errors.goalAmount ? 'Min amount is 1' : null}
+              {errors.goalAmount ? 'Min amount is $1.00' : null}
             </FormErrorMessage>
           </FormControl>
 
