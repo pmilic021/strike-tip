@@ -33,7 +33,7 @@ const CampaignSettings: NextPage = () => {
         <h6>Payment page</h6>
         <Link
           href={{
-            pathname: '/donation',
+            pathname: '/campaign-donation',
             query: settingsQueryParam,
           }}
         >
